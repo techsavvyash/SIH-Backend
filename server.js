@@ -13,7 +13,7 @@ app.use(cors({
 
 
 app.get('/', (req, res) => {
-    res.send("Hey, There!")
+    res.send("Hey, There!").status(200)
 })
 
 app.listen(process.env.PORT || 8080, () => {

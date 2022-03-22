@@ -19,6 +19,11 @@ const InterviewSchema = mongoose.Schema(
         "Company ID of the company taking the interview is necessary",
       ],
     },
+    opening: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Openings",
+      required: [true, "Opening corresponding to the interview is necessary"],
+    },
   },
   {
     collection: "Interview",

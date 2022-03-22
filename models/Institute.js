@@ -22,9 +22,9 @@ const InstituteSchema = mongoose.Schema(
         ref: "Company",
       },
     ],
-    accountStatus: {
-      type: mongoose.Schema.Types.Boolean,
-      required: [true, "Institute Account Status is a Required Field"],
+    password: {
+      type: mongoose.Schema.Types.String,
+      required: [true, "Password is required!"],
     },
   },
   {

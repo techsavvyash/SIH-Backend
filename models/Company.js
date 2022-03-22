@@ -18,10 +18,11 @@ const CompanySchema = mongoose.Schema(
         ref: "Institute",
       },
     ],
-    companyStatus: {
-      type: mongoose.Schema.Types.Boolean,
-      required: [true, "Company Status is required"],
+    password: {
+      type: mongoose.Schema.Types.String,
+      required: [true, "Password is required!"],
     },
+    openings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Openings" }],
   },
   {
     colletion: "Company",

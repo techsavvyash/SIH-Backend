@@ -31,6 +31,9 @@ app.get("/", (req, res) => {
   res.send("Hey, There!").status(200);
 });
 
+app.use(require("./routes/openings"));
+app.use(require("./routes/auth"));
+
 app.listen(process.env.PORT || 5000, () => {
   console.log("http://localhost:5000");
 });

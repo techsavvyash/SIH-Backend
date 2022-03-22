@@ -26,6 +26,16 @@ const InstituteSchema = mongoose.Schema(
       type: mongoose.Schema.Types.String,
       required: [true, "Password is required!"],
     },
+    courses: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Course",
+        required: [
+          true,
+          "List of the courses offered by the institute is required",
+        ],
+      },
+    ],
   },
   {
     collection: "Institute",

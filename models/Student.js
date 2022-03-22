@@ -20,11 +20,25 @@ const StudentSchema = mongoose.Schema(
     companiesApplied: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
     ],
-    currentlyEmployed: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
-    previousInterviews: {},
+    currentlyEmployedAt: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Company",
+    },
+    previousInterviews: {
+      type: mongoose.Schema.Types.Array,
+    },
     password: {
       type: mongoose.Schema.Types.String,
       required: [true, "Password is required!"],
+    },
+    course: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Course",
+      required: [true, "Course is required"],
+    },
+    employmentStatus: {
+      type: mongoose.Schema.Types.Boolean,
+      required: [true, "Student's employment status is a required field!"],
     },
   },
   {

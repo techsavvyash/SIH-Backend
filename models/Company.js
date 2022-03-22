@@ -10,7 +10,13 @@ const CompanySchema = mongoose.Schema(
       type: mongoose.Schema.Types.String,
       required: [true, "Name is required!"],
     },
-    studentsCurrentllyEmployed: [mongoose.Schema.Types.ObjectId],
+    studentsCurrentllyEmployed: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Student",
+        required: [true, "List of currently employed students is required!"],
+      },
+    ],
     studentsInterviewed: [mongoose.Schema.Types.ObjectId],
     instituesAssociated: [
       {

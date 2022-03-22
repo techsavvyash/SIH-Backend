@@ -16,6 +16,15 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    saveUninitialized: true,
+    resave: true,
+    SameSite: "strict",
+  })
+);
 app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", process.env.CORS_URL);
   res.setHeader(
@@ -33,6 +42,7 @@ app.get("/", (req, res) => {
 
 app.use(require("./routes/openings"));
 app.use(require("./routes/auth"));
+app.use(require("./routes/interview"));
 
 app.listen(process.env.PORT || 5000, () => {
   console.log("http://localhost:5000");

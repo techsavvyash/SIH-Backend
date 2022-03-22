@@ -1,6 +1,7 @@
 const Company = require("../models/Company");
 const Institute = require("../models/Institute");
 const Student = require("../models/Student");
+const generateJWT = require("../utils/utils").generateJWT;
 
 exports.signup = async (req, res, next) => {
   let flag = false;
@@ -30,9 +31,10 @@ exports.signup = async (req, res, next) => {
             });
             // add logic to email the credentials to the company
             flag = true;
-            res
-              .status(201)
-              .send({ status: true, message: "Registration Successful!" });
+            res.status(201).send({
+              status: true,
+              message: "Registration Successful! Kindly, Login In!",
+            });
           }
         } catch (err) {
           console.log("Error", err);
@@ -65,7 +67,7 @@ exports.signup = async (req, res, next) => {
           });
         }
       } catch (err) {
-        res.send({ status: false, message: "User Already Exists!" });
+        res.send({ status: false, message: "Some Error Occured!" });
       }
       break;
     case "institution":
@@ -81,12 +83,13 @@ exports.signup = async (req, res, next) => {
         flag = true;
         res.send({
           status: true,
-          message: "Institute Registered Successfully!",
+          message:
+            "Institute Registered Successfully!, Kindly Login to access the dashboard",
         });
       } else {
         res.send({
           status: false,
-          message: "Institution is already registered!",
+          message: "Institution is already registered! Kindly login!",
         });
       }
       break;
@@ -128,7 +131,8 @@ exports.login = async (req, res, next) => {
       }
 
       if (password === findUser.password) {
-        //req.session.token = generateJWT(user.username);
+        req.session.token = generateJWT(findUser.companyTIN);
+        req.session.role = "employer";
         res.send({ status: true, message: "Log In Success!" });
       } else {
         res.send({ status: false, message: "invalid credentials!" });
@@ -151,7 +155,8 @@ exports.login = async (req, res, next) => {
         }
 
         if (password === findInstitute.password) {
-          //req.session.token = generateJWT(user.username);
+          req.session.token = generateJWT(findInstitute.instituteId);
+          req.session.role = "institution";
           res.send({ status: true, message: "Login Success!" });
         } else {
           res.send({ status: false, message: "Invalid credentials" });
@@ -176,7 +181,8 @@ exports.login = async (req, res, next) => {
         }
 
         if (password === findStudent.password) {
-          //req.session.token = generateJWT(user.username);
+          req.session.token = generateJWT(findStudent.studentId);
+          req.session.role = "student";
           res.send({ status: true, message: "Login Success!" });
         } else {
           res.send({ status: false, message: "Invalid credentials" });

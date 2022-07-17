@@ -11,6 +11,10 @@ const OpeningSchema = mongoose.Schema(
       ref: "Company",
       required: [true, "Company is required"],
     },
+    company: {
+      type: mongoose.Schema.Types.String,
+      required: [true, "Company name is required"],
+    },
     description: {
       type: mongoose.Schema.Types.String,
       required: [true, "Description is required!"],

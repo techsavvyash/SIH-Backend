@@ -43,7 +43,7 @@ exports.getCompanyInterviews = async (req, res, next) => {
 
 exports.postStudentInterviews = async (req, res, next) => {
   const { openingId, studentId } = req.body;
-  if ((!openingId, !studentId)) {
+  if (!openingId || !studentId) {
     res.send({ status: false, message: "invalid credentials!" });
     return;
   }

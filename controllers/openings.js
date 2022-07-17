@@ -1,3 +1,4 @@
+const Company = require("../models/Company");
 const Openings = require("../models/Openings");
 
 exports.getOpenings = async (req, res, next) => {
@@ -18,9 +19,17 @@ exports.postOpenings = async (req, res, next) => {
   }
 
   try {
+    console.log(companyTIN);
+    const company = await Company.findOne({ _id: companyTIN });
+    console.log("company: ", company);
+    if (company === null) {
+      res.send({ status: false, message: "Invalid credentials" });
+      return;
+    }
     const opening = await Openings.create({
       openingId,
       companyTIN,
+      company: company.name,
       description,
     });
     res.send({

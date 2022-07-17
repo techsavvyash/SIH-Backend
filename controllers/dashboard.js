@@ -1,28 +1,66 @@
 const Company = require("../models/Company");
 const Institute = require("../models/Institute");
 const Student = require("../models/Student");
-
+const jwt = require("jsonwebtoken");
 exports.getDashboard = async (req, res, next) => {
+  req.user = null;
+  const token = req.session.token;
+  if (token == null) {
+    res.user = null;
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err || user == null) {
+      req.user = null;
+    } else {
+      req.user = user.username;
+    }
+  });
   if (req.session === null) {
+    console.log("here");
     res.send({
       status: false,
       message: "You need to login to access this page!",
     });
+
     return;
   }
   const role = req.session.role;
+  console.log(role);
+  console.log(req.user);
   if (!role || !req.user) {
     res.send({
       status: false,
       message: "You need to login to access this page!",
     });
+
     return;
   }
 
   switch (role) {
     case "employer":
-      const company = Company.find({ companyTIN: req.user });
+      const company = await Company.findOne({ companyTIN: req.user });
       if (company === null) {
+        req.session = null;
+        res.send({
+          status: false,
+          message: "You need to login to access this page!",
+        });
+
+        return;
+      }
+
+      res.send({
+        status: true,
+        message: "fetch success",
+        role: "employer",
+        obj: company,
+      });
+
+      break;
+    case "student":
+      const student = await Student.findOne({ studentId: req.user });
+      if (student === null) {
         req.session = null;
         res.send({
           status: false,
@@ -34,32 +72,13 @@ exports.getDashboard = async (req, res, next) => {
       res.send({
         status: true,
         message: "fetch success",
-        role: "employer",
-        data: company,
-      });
-
-      break;
-    case "student":
-      const student = Student.find({ studentId: req.user });
-      if (student === null) {
-        req.session = null;
-        res.send({
-          status: false,
-          message: "You need to login to access this page!",
-        });
-        return;
-      }
-
-      res.send({
-        status: false,
-        message: "fetch success",
         role: "student",
-        data: student,
+        obj: student,
       });
       break;
     case "institution":
-      const institute = Institute.find({ instituteId: req.user });
-      if (company === null) {
+      const institute = await Institute.findOne({ instituteId: req.user });
+      if (institute === null) {
         req.session = null;
         res.send({
           status: false,
@@ -70,10 +89,10 @@ exports.getDashboard = async (req, res, next) => {
       }
 
       res.send({
-        status: false,
+        status: true,
         message: "fetch success!",
         role: "institute",
-        data: institute,
+        obj: institute,
       });
       break;
 

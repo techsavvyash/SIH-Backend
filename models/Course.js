@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const CourseSchema = mongoose.Schema(
   {
     courseId: {
-      type: mongoose.Schema.Types.Number,
+      type: mongoose.Schema.Types.String,
       required: [true, "Course Id is a required field!"],
     },
     name: {
@@ -14,6 +14,8 @@ const CourseSchema = mongoose.Schema(
       type: mongoose.Schema.Types.String,
       required: [true, "Duration is required!"],
     },
+    numStudentsEnrolled: mongoose.Schema.Types.Number,
+    numStudentsEmployed: mongoose.Schema.Types.Number,
   },
   {
     collection: "Course",

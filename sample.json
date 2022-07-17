@@ -1,0 +1,10 @@
+{
+    // a student object
+    "role":"student",
+    "studentId": "12012185",
+    "name": "John Doe",
+    "course": "623ae5244e1edc7d48ae087b",
+    "employmentStatus": false,
+    "password": "pass",
+    "institute": "623ae5124e1edc7d48ae0874"
+}

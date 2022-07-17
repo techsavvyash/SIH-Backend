@@ -45,7 +45,7 @@ exports.signup = async (req, res, next) => {
       }
       break;
     case "student":
-      const { studentId, institute } = req.body;
+      const { studentId, institute, course, employmentStatus } = req.body;
       try {
         const checkUser = await Student.findOne({ studentId, institute });
         if (checkUser === null) {
@@ -53,6 +53,9 @@ exports.signup = async (req, res, next) => {
             studentId: studentId,
             name: name,
             password: password,
+            course: course,
+            employmentStatus: employmentStatus,
+            institute: institute,
           });
           // logic to email the credentials
           flag = true;
@@ -67,6 +70,7 @@ exports.signup = async (req, res, next) => {
           });
         }
       } catch (err) {
+        console.log("Error: ", err);
         res.send({ status: false, message: "Some Error Occured!" });
       }
       break;
@@ -110,18 +114,19 @@ exports.login = async (req, res, next) => {
     return;
   }
 
-  const { password } = req.body;
+  const { username, password } = req.body;
   switch (role) {
     case "employer":
       console.log("initiating employer login");
-      const { companyTIN } = req.body;
-      if (!companyTIN || !password) {
+      // const { companyTIN } = req.body;
+      if (!username || !password) {
         res
           .status(401)
           .send({ status: false, message: "Invalid Credentials!" });
+        return;
       }
-      console.log("companyTIN", companyTIN);
-      const findUser = await Company.findOne({ companyTIN });
+      // console.log("companyTIN", companyTIN);
+      const findUser = await Company.findOne({ companyTIN: username });
       console.log("findUser", findUser);
       if (findUser === null) {
         res
@@ -141,14 +146,16 @@ exports.login = async (req, res, next) => {
       break;
 
     case "institution":
-      const { instituteId } = req.body;
-      if (!instituteId || !password) {
+      // const { instituteId } = req.body;
+      if (!username || !password) {
         res.send({ status: false, message: "Invalid Credentials!" });
         return;
       }
 
       try {
-        const findInstitute = await Institute.findOne({ instituteId });
+        const findInstitute = await Institute.findOne({
+          instituteId: username,
+        });
         if (findInstitute === null) {
           res.send({ status: false, message: "Invalid credentials!" });
           return;
@@ -168,13 +175,13 @@ exports.login = async (req, res, next) => {
       break;
 
     case "student":
-      const { studentId } = req.body;
-      if (!studentId || !password) {
+      // const { studentId } = req.body;
+      if (!username || !password) {
         res.send({ status: false, message: "Invalid credentials!" });
         return;
       }
       try {
-        const findStudent = await Student.findOne({ studentId });
+        const findStudent = await Student.findOne({ studentId: username });
         if (findStudent === null) {
           res.send({ status: false, message: "Invalid credentials!" });
           return;

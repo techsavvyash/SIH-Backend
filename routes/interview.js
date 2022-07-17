@@ -10,6 +10,6 @@ const postStudentInterviews =
 
 router.route("/interview/student").get(getStudentInterviews);
 router.route("/interview/company").get(getCompanyInterviews);
-router.route("/interview/student").post(getCompanyInterviews);
+router.route("/interview/student").post(postStudentInterviews);
 
 module.exports = router;

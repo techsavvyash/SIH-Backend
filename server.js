@@ -43,6 +43,10 @@ app.get("/", (req, res) => {
 app.use(require("./routes/openings"));
 app.use(require("./routes/auth"));
 app.use(require("./routes/interview"));
+app.use(require("./routes/courses"));
+app.use(require("./routes/companies"));
+app.use(require("./routes/dashboard"));
+app.use(require("./routes/hiring"));
 
 app.listen(process.env.PORT || 5000, () => {
   console.log("http://localhost:5000");

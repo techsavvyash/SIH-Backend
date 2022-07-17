@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const StudentSchema = mongoose.Schema(
   {
     studentId: {
-      type: mongoose.Schema.Types.Number,
+      type: mongoose.Schema.Types.String,
       required: [true, "studentID is a required field!"],
     },
     name: {
@@ -17,6 +17,7 @@ const StudentSchema = mongoose.Schema(
         required: [true, "Institute is required!"],
       },
     ],
+
     companiesApplied: [
       { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
     ],
@@ -40,14 +41,29 @@ const StudentSchema = mongoose.Schema(
       type: mongoose.Schema.Types.Boolean,
       required: [true, "Student's employment status is a required field!"],
     },
+    hiringRequests: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "HiringRequest",
+      },
+    ],
   },
   {
     collection: "Student",
   }
 );
 
-StudentSchema.methods.updateCompaniesApplied = async function () {
+StudentSchema.methods.updateCompaniesApplied = async function (company) {
   // code to update the companies applied to here
+  this.companiesApplied.push(company);
+};
+
+StudentSchema.methods.updateCurrentlyEmployed = function (company) {
+  this.currentlyEmployedAt = company;
+};
+
+StudentSchema.methods.updateEmploymentStatus = async function (status) {
+  this.employmentStatus = status;
 };
 
 const Student = mongoose.model("Student", StudentSchema);

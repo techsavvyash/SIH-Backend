@@ -24,6 +24,15 @@ const InterviewSchema = mongoose.Schema(
       ref: "Openings",
       required: [true, "Opening corresponding to the interview is necessary"],
     },
+    schedule: {
+      type: mongoose.Schema.Types.Date,
+      required: [true, "Schedule of the interview is required"],
+    },
+    hiringRequest: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "HiringRequest",
+      required: [true, "Hiring Request is a required field"],
+    },
   },
   {
     collection: "Interview",

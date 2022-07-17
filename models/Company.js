@@ -29,26 +29,32 @@ const CompanySchema = mongoose.Schema(
       required: [true, "Password is required!"],
     },
     openings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Openings" }],
+    hiringRequests: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "HiringStatus",
+      },
+    ],
   },
   {
-    colletion: "Company",
+    collection: "Company",
   }
 );
 
-CompanySchema.methods.updateStatus = async function () {
-  // code to update the institute status here
-};
-
-CompanySchema.methods.updateInstitutes = async function () {
+CompanySchema.methods.updateInstitutes = function (institute) {
   // code to update the associated institutes here
+  this.instituesAssociated.push(institute);
 };
 
-CompanySchema.methods.updateCurrentlyEmployed = async function () {
+CompanySchema.methods.updateCurrentlyEmployed = function (student) {
   //  code to update the currently employed students
+  this.studentsCurrentllyEmployed.push(student);
 };
 
-CompanySchema.methods.updateStudentsInterviewed = async function () {
+CompanySchema.methods.updateStudentsInterviewed = function (student) {
   // code to update the students currently interviewed
+  this.studentsInterviewed.push(student);
 };
+
 const Company = mongoose.model("Company", CompanySchema);
 module.exports = Company;
